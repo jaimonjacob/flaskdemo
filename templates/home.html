@@ -1,38 +1,92 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Playground</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  </head>
-  <body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playground</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
   <section class="section">
     <div class="container">
-    	<form action="your-url" method="post">
-      
+      <!-- jinja standard code for flash message -->
+      <p>{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </p>
 
-          <div class="field">
-            <input class="input" type="text" name='inputurl' value="" placeholder="Enter url">
-          </div>
 
-          <div class="field">
-            <input class="input" type="text" name='shortname' value="" placeholder="Enter short name">
-          </div>
+      <div class="columns">
+        <div class="column is-half">
+
+          <form action="your-url" method="post">
 
 
-          <div class="field">
+            <div class="field">
+              <input class="input" type="url" name='inputurl' value="" placeholder="Enter url">
+            </div>
+
+            <div class="field">
+              <input class="input" type="text" name='shortname' value="" placeholder="Enter short name">
+            </div>
+
+
+            <div class="field">
               <input type="submit" class="button is-success">
+            </div>
+
+          </form>
+
+          <div class="content is-normal mt-5">
+            <p>Test para</p>
           </div>
-    
-    </form>
-    
-    <div class="content is-normal mt-5">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
-    </div>
+
+        </div>
+
+
+        <div class="column is-half">
+
+          <form action="your-url" method="post" enctype="multipart/form-data">
+            <div class="field">
+              <div class="file">
+                <label class="file-label">
+                  <input  type="file" name="file">
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <input class="input" type="text" name='shortname' value="" placeholder="Enter short name">
+            </div>
+
+            <div class="field">
+              <input type="submit" class="button is-info">
+            </div>
+
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+
+
     </div>
   </section>
-  </body>
-  <script src="https://kit.fontawesome.com/e61991e19a.js" crossorigin="anonymous"></script>
-</html>
+</body>
+<script src="https://kit.fontawesome.com/e61991e19a.js" crossorigin="anonymous"></script>
 
+</html>
