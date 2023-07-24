@@ -1,21 +1,27 @@
+{% extends "base.html" %}
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Playground</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <title>{% block title %}home{% endblock%}</title>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 
 <body>
   <section class="section">
     <div class="container">
+
+      {% block content %}
       <!-- jinja standard code for flash message -->
       <p>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
-        {{ message }}
+        <div class="notification is-warning">
+          <button class="delete"></button>
+          {{ message }}
+        </div>
         {% endfor %}
         {% endif %}
         {% endwith %}
@@ -47,6 +53,19 @@
             <p>Test para</p>
           </div>
 
+          {% if shortnames %}
+          <h2>The shortnames that you alrady created:</h2>
+          <ul>
+            {% for shortname in shortnames %}
+            <a href="{{ url_for('redirect_to_url', code=shortname) }}">
+            <li>{{ shortname }}</li>
+          </a>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+
+
         </div>
 
 
@@ -75,18 +94,9 @@
         </div>
 
       </div>
-
-
-
-
-
-
-
-
-
+      {% endblock %}
     </div>
   </section>
 </body>
 <script src="https://kit.fontawesome.com/e61991e19a.js" crossorigin="anonymous"></script>
-
 </html>
