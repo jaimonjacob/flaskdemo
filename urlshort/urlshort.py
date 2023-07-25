@@ -5,15 +5,11 @@ from werkzeug.utils import secure_filename
 
 urlshort_bp = Blueprint('urlshort', __name__, static_folder='static', template_folder='templates')
 
-app = Flask(__name__)
-# A Secret key should be created to use flash message
-app.secret_key = '6kjljhoi0p'
-
-@app.route('/')
+@urlshort_bp.route('/')
 def home():
 	return render_template('home.html', shortnames = session.keys())
 
-@app.route('/your-url', methods = ['GET', 'POST'])
+@urlshort_bp.route('/your-url', methods = ['GET', 'POST'])
 def your_url():
 	if request.method=='POST':
 		urls = {}
@@ -25,7 +21,7 @@ def your_url():
 		# Check if the current shortname, exists in the json. if yes, flas a message and redirect to home
 		if request.form['shortname'] in urls.keys():
 			flash('This entry already exists; please use a new entry')
-			return redirect(url_for('home'))
+			return redirect(url_for('urlshort.home'))
 		
 		if 'inputurl' in request.form.keys():
 			# Collect the shortname and url from the form and add to the 'urls' object
@@ -48,10 +44,10 @@ def your_url():
 	
 	else:
 		# if the method is not post, redirect to home
-		return redirect(url_for('home'))
+		return redirect(url_for('urlshort.home'))
 
 # Dynamic varialbe assignments 
-@app.route('/<string:code>')
+@urlshort_bp.route('/<string:code>')
 def redirect_to_url(code):
 	if os.path.exists('url.json'):
 		with open('url.json') as url_file_object:
@@ -67,14 +63,14 @@ def redirect_to_url(code):
 
 
 # Adding a custom 404 page
-@app.errorhandler(404)
+@urlshort_bp.errorhandler(404)
 def page_not_found(error):
 	return render_template('page_not_found.html'), 404
 
 # Creating API
-@app.route('/api')
+@urlshort_bp.route('/api')
 def convert_api():
 	return jsonify(list(session.keys()))
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	urlshort_bp.run(debug=True)
