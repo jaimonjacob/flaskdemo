@@ -3,7 +3,7 @@ import json
 import os.path
 from werkzeug.utils import secure_filename
 
-urlshort_bp = Blueprint('urlshort', __name__, static_folder='static', template_folder='templates')
+urlshort_bp = Blueprint('urlshort', __name__, static_folder='static', template_folder='templates', url_prefix="/")
 
 @urlshort_bp.route('/')
 def home():
@@ -32,7 +32,7 @@ def your_url():
 			# create a file that is a combination of the shortcode and the uploaded file name
 			full_name = request.form['shortname'] + '_' + f.filename
 			# save the file to the current directory with the full name added to the file name
-			f.save('static/user_files/'+ full_name)
+			f.save('urlshort/static/user_files/'+ full_name)
 			# Collect the shortname and filename  and add to the 'urls' object
 			urls[request.form['shortname']] = {'file' :  secure_filename(full_name)}
 			# Open the file and add the object to the json file
@@ -58,7 +58,7 @@ def redirect_to_url(code):
 						return redirect(urls[code]['url'])
 					else:
 					# if the code is in the json, then go to the url address for the file relevant to the code. url_for function is needed to generate urls for files						
-						return redirect(url_for('static', filename='user_files/' + urls[code]['file']))
+						return redirect(url_for('urlshort/static', filename='user_files/' + urls[code]['file']))
 	return abort(404)
 
 

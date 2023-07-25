@@ -57,7 +57,7 @@
           <h2>The shortnames that you alrady created:</h2>
           <ul>
             {% for shortname in shortnames %}
-            <a href="{{ url_for('redirect_to_url', code=shortname) }}">
+            <a href="{{ url_for('urlshort.redirect_to_url', code=shortname) }}">
             <li>{{ shortname }}</li>
           </a>
             {% endfor %}
