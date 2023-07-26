@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
 import json
 import os.path
+import os
 from werkzeug.utils import secure_filename
 
-urlshort_bp = Blueprint('urlshort', __name__, static_folder='static', template_folder='templates', url_prefix="/")
+urlshort_bp = Blueprint('urlshort', __name__, static_folder='static', static_url_path='urlshort/static', template_folder='templates')
 
 @urlshort_bp.route('/')
 def home():
@@ -12,10 +13,13 @@ def home():
 @urlshort_bp.route('/your-url', methods = ['GET', 'POST'])
 def your_url():
 	if request.method=='POST':
+		cwd = os.getcwd()
+		files = os.listdir(cwd)  # Get all the files in that directory
+		print("Files in %r: %s" % (cwd, files))
 		urls = {}
 		# Check if the file exists, and if yes, convert to json and assign to a variable
-		if os.path.exists('url.json'):
-			with open('url.json') as url_file_object:
+		if os.path.exists('urlshortsite/urlshort/url.json'):
+			with open('urlshortsite/urlshort/url.json',) as url_file_object:
 				urls = json.load(url_file_object)
 		
 		# Check if the current shortname, exists in the json. if yes, flas a message and redirect to home
@@ -36,7 +40,7 @@ def your_url():
 			# Collect the shortname and filename  and add to the 'urls' object
 			urls[request.form['shortname']] = {'file' :  secure_filename(full_name)}
 			# Open the file and add the object to the json file
-		with open('url.json', 'w') as url_file_object:
+		with open('urlshortsite/urlshort/url.json', 'w') as url_file_object:
 			json.dump(urls, url_file_object)
 			# Adding to a cookie
 			session[request.form['shortname']] = True
@@ -49,8 +53,8 @@ def your_url():
 # Dynamic varialbe assignments 
 @urlshort_bp.route('/<string:code>')
 def redirect_to_url(code):
-	if os.path.exists('url.json'):
-		with open('url.json') as url_file_object:
+	if os.path.exists('urlshortsite/urlshort/url.json'):
+		with open('urlshortsite/urlshort/url.json') as url_file_object:
 				urls = json.load(url_file_object)
 				if code in urls.keys():
 					# if the code is in the json file, then go to the url address relevant to the code
@@ -58,7 +62,7 @@ def redirect_to_url(code):
 						return redirect(urls[code]['url'])
 					else:
 					# if the code is in the json, then go to the url address for the file relevant to the code. url_for function is needed to generate urls for files						
-						return redirect(url_for('urlshort/static', filename='user_files/' + urls[code]['file']))
+						return redirect(url_for('urlshort.static', filename='user_files/' + urls[code]['file']))
 	return abort(404)
 
 
