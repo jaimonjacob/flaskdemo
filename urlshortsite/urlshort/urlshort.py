@@ -36,7 +36,7 @@ def your_url():
 			# create a file that is a combination of the shortcode and the uploaded file name
 			full_name = request.form['shortname'] + '_' + f.filename
 			# save the file to the current directory with the full name added to the file name
-			f.save('urlshort/static/user_files/'+ full_name)
+			f.save('urlshortsite/urlshort/static/user_files/'+ full_name)
 			# Collect the shortname and filename  and add to the 'urls' object
 			urls[request.form['shortname']] = {'file' :  secure_filename(full_name)}
 			# Open the file and add the object to the json file
