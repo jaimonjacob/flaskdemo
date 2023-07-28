@@ -1,1 +1,1 @@
-web: gunicorn app:urlshortsite
+web: gunicorn "urlshortsite:create_app()"
